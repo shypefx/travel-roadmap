@@ -1,25 +1,23 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
+  "short_name": "Roadmap",
+  "name": "Travel Roadmap",
+  "description": "Planificateur de voyage mobile offline",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "navigation", "productivity"],
+  "lang": "fr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "display_override": ["standalone", "minimal-ui"],
+  "shortcuts": [
+    {
+      "name": "Roadmap",
+      "short_name": "Roadmap",
+      "url": "/?tab=roadmap",
+      "icons": [{"src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJsMy4wOSA2LjI2TDIyIDloLTVsLTMgNS0zLTVINmw2LjkxLTAuNzRMMTIgMnoiIGZpbGw9IiM2NjdlZWEiLz4KPC9zdmc+", "sizes": "96x96"}]
+    }
+  ]
 }
