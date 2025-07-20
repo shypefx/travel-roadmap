@@ -32,7 +32,7 @@ const parseExcelWithAllSheets = (file) => {
           const type = detectTypeFromSheetName(sheetName);
 
           if (type === 'activities') {
-            const [headers, ...dataRows] = rows;
+            const [...dataRows] = rows;
             dataRows.forEach(row => {
               const activity = parseActivityRow(row);
               if (activity) result.roadmap.push(activity);
@@ -40,7 +40,7 @@ const parseExcelWithAllSheets = (file) => {
           }
 
           if (type === 'vinyl') {
-            const [headers, ...dataRows] = rows;
+            const [...dataRows] = rows;
             dataRows.forEach(row => {
               const shop = parseVinylRow(row);
               if (shop) result.vinyl.push(shop);
@@ -48,7 +48,7 @@ const parseExcelWithAllSheets = (file) => {
           }
 
           if (type === 'shops') {
-            const [headers, ...dataRows] = rows;
+            const [...dataRows] = rows;
             dataRows.forEach(row => {
               const shop = parseShopRow(row);
               if (shop) result.shops.push(shop);

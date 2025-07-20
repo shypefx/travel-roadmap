@@ -36,16 +36,20 @@ const ImportExcel = ({ onImportSuccess }) => {
       const saved = saveAllDataToLocalStorage(result);
       
       if (saved) {
+        const roadmapLength = result.roadmap?.length || 0;
+        const shopLength = result.shops?.length || 0;
+        const vinylLength = result.vinyl?.length || 0;
+
         setSuccess({
-          message: `Import réussi ! ${result.totalEvents} événements importés sur ${result.data.length} jour(s)`,
-          detectedColumns: result.detectedColumns,
-          totalEvents: result.totalEvents,
-          totalDays: result.data.length
+          message: `Import réussi ! ${roadmapLength} activités, ${shopLength} magasins, ${vinylLength} vinyles importés.`,
+          totalRoadmap: roadmapLength,
+          totalShops: shopLength,
+          totalVinyl: vinylLength
         });
         
         // Appeler le callback avec les données
         if (onImportSuccess) {
-          onImportSuccess(result.data);
+          onImportSuccess(result);
         }
       } else {
         setError('Données importées mais erreur lors de la sauvegarde');
@@ -179,18 +183,6 @@ const ImportExcel = ({ onImportSuccess }) => {
           <Divider sx={{ my: 1 }} />
           
           <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1 }}>
-            <Chip 
-              label={`${success.totalDays} jour(s)`} 
-              size="small" 
-              color="success" 
-              variant="outlined"
-            />
-            <Chip 
-              label={`${success.totalEvents} événement(s)`} 
-              size="small" 
-              color="success" 
-              variant="outlined"
-            />
           </Stack>
           
           {success.detectedColumns && (

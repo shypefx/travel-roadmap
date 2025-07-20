@@ -10,7 +10,6 @@ import {
   Paper
 } from '@mui/material';
 import Header from './components/Header';
-import OfflineIndicator from './components/OfflineIndicator';
 import TravelRoadmap from './components/TravelRoadmap';
 import BudgetTracker from './components/BudgetTracker';
 
@@ -124,7 +123,6 @@ function App() {
             px: { xs: 2, sm: 3 }
           }}
         >
-          <OfflineIndicator />
           {renderCurrentPage()}
         </Container>
       </Box>

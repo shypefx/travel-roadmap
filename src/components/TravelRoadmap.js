@@ -214,25 +214,20 @@ const TravelRoadmap = ({ importedData, onRefresh, onDataUpdate }) => {
     }
   };
 
-  const handleFileUpload = (data) => {
-    console.log('📁 Upload de fichier:', data);
-    if (data && Array.isArray(data)) {
-      const newData = {
-        ...allData,
-        roadmap: data
-      };
-      
-      setAllData(newData);
-      setStats(getDataStats(newData));
-      saveAllDataToLocalStorage(newData);
-      showSnackbar('Fichier importé avec succès!', 'success');
-      setImportDialog(false);
-      
-      if (onDataUpdate) {
-        onDataUpdate(newData);
-      }
-    }
+const handleFileUpload = (importedData) => {
+  console.log('📥 Données importées:', importedData);
+
+  const newData = {
+    roadmap: importedData.roadmap || [],
+    shops: importedData.shops || [],
+    vinyl: importedData.vinyl || []
   };
+
+  setAllData(newData);
+  setLastSaved(new Date().toISOString());
+  showSnackbar('Données importées avec succès!', 'success');
+};
+
 
   const showSnackbar = (message, severity = 'info') => {
     setSnackbar({
@@ -461,7 +456,7 @@ const TravelRoadmap = ({ importedData, onRefresh, onDataUpdate }) => {
       >
         <DialogTitle>📥 Importer des données</DialogTitle>
         <DialogContent>
-          <ImportExcel onImport={handleFileUpload} />
+          <ImportExcel onImportSuccess={handleFileUpload} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setImportDialog(false)}>Annuler</Button>
