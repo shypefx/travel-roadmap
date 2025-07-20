@@ -74,6 +74,19 @@ const EditableTimelineCard = ({
     return option ? option.color : 'default';
   };
 
+  const getColorByTime = (time) => {
+    const lowerTime = String(time).toLowerCase();
+
+    if (lowerTime.includes('matin')) return '#FFF9C4';       // jaune clair
+    if (lowerTime.includes('midi')) return '#9ef068ff';        // orange clair
+    if (lowerTime.includes('aprem') || lowerTime.includes('après')) return '#6eb9dbff'; // bleu clair
+    if (lowerTime.includes('soir')) return '#3f3dccff';        // violet clair
+    if (lowerTime.includes('nuit')) return '#c46efdff';        // gris bleuté
+
+    return '#FFFFFF'; // par défaut
+};
+
+
   return (
     <Card
       sx={{
@@ -88,6 +101,8 @@ const EditableTimelineCard = ({
         }
       }}
     >
+        <Box sx={{ height: 30, backgroundColor: getColorByTime(event.time) }} />
+
       <CardContent sx={{ p: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
