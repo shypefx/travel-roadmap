@@ -41,8 +41,8 @@ const parseExcelWithAllSheets = (file) => {
 
           if (type === 'vinyl') {
             const [...dataRows] = rows;
-            dataRows.forEach(row => {
-              const shop = parseVinylRow(row);
+            dataRows.forEach((row, index) => {
+              const shop = parseVinylRow(row, sheet, index);
               if (shop) result.vinyl.push(shop);
             });
           }
@@ -108,26 +108,38 @@ const parseActivityRow = (row) => {
 };
 
 // 🎵 Parser un disquaire
-const parseVinylRow = (row) => {
+// 🎵 Parser un disquaire (mise à jour avec lien direct Google Maps)
+// 🎵 Parser un disquaire (lecture du lien hypertexte Excel)
+const parseVinylRow = (row, sheet, rowIndex) => {
   if (!row[0] || row[0] === '🏪 Boutique') return null;
+
+  const name = row[0] || '';
+  const notes = row[2] || '';
+
+  // 👉 Lire le lien réel de la cellule B (index 1) via sheet
+  const cellRef = XLSX.utils.encode_cell({ r: rowIndex, c: 1 }); // ligne=rowIndex, colonne=1 (B)
+  const cell = sheet[cellRef];
+  const mapsUrl = cell?.l?.Target || '';
 
   return {
     id: `vinyl-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    name: row[0] || '',
-    address: row[1] || '',
+    name,
+    address: '', // supprimé
     type: 'vinyl',
     visited: false,
     favorite: false,
     specialties: [],
-    notes: '',
+    notes,
     rating: 0,
     phone: '',
     website: '',
     hours: '',
     wishlist: [],
-    mapsUrl: generateMapsUrl(row[1])
+    mapsUrl // ✅ Lien réel cliquable
   };
 };
+
+
 
 // 🏪 Parser un magasin classique
 const parseShopRow = (row) => {
