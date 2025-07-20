@@ -338,7 +338,7 @@ const handleFileUpload = (importedData) => {
                 <Box key={item.id || index}>
                   <EditableTimelineCard
                     event={item}
-                    onUpdateItem={handleUpdateRoadmap}
+                    onUpdate={handleUpdateRoadmap}
                   />
                 </Box>
               ))}

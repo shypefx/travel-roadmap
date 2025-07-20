@@ -2,7 +2,7 @@
 import React from 'react';
 import EditableTimelineCard from './EditableTimelineCard';
 
-const TimelineCard = ({ event, onDeleteEvent, dayIndex, eventIndex, showDelete = false }) => {
+const TimelineCard = ({ event, onDeleteEvent, onUpdate, dayIndex, eventIndex, showDelete = false }) => {
   // Vérification de sécurité
   if (!event) {
     console.warn('TimelineCard: event est undefined');
@@ -17,7 +17,7 @@ const TimelineCard = ({ event, onDeleteEvent, dayIndex, eventIndex, showDelete =
       dayIndex={dayIndex}
       eventIndex={eventIndex}
       showDelete={showDelete}
-      onUpdate={() => {}} // Pas de mise à jour dans le mode lecture
+      onUpdate={onUpdate} // Pas de mise à jour dans le mode lecture
     />
   );
 };
