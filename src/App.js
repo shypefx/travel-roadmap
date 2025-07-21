@@ -12,6 +12,7 @@ import {
 import Header from './components/Header';
 import TravelRoadmap from './components/TravelRoadmap';
 import BudgetTracker from './components/BudgetTracker';
+import Weather from './components/Weather';
 
 // Thème personnalisé
 const theme = createTheme({
@@ -79,6 +80,14 @@ function App() {
       case 'budget':
         return (
           <BudgetTracker />
+        );
+
+      case 'weather':
+        return (
+          <Weather 
+            title="Weather" 
+            description="Trouvez les meilleurs disquaires de votre destination"
+          />
         );
       
       case 'shops':

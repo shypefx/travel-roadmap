@@ -17,6 +17,7 @@ import {
   Menu as MenuIcon,
   TravelExplore,
   AccountBalanceWallet,
+  WbSunny as Weather,
   Store,
   LibraryMusic
 } from '@mui/icons-material';
@@ -38,6 +39,12 @@ const Header = ({ currentPage, onPageChange }) => {
       label: 'Budget Tracker',
       icon: <AccountBalanceWallet />,
       description: 'Gestion du budget'
+    },
+    {
+      id: 'weather',
+      label: 'Weather',
+      icon: <Weather />,
+      description: 'Weather'
     },
     {
       id: 'shops',
