@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Avatar,
   Card,
   CardContent,
   Typography,
@@ -20,7 +21,8 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   Check as CheckIcon,
-  Cancel as CancelIcon
+  Cancel as CancelIcon,
+  Today as TodayIcon
 } from '@mui/icons-material';
 
 const EditableTimelineCard = ({ 
@@ -29,7 +31,8 @@ const EditableTimelineCard = ({
   onDeleteEvent,
   dayIndex,
   eventIndex,
-  showDelete = false 
+  showDelete = false ,
+  weather
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedStatus, setEditedStatus] = useState(event.statut || '');
@@ -77,7 +80,8 @@ const EditableTimelineCard = ({
   const getColorByTime = (time) => {
     const lowerTime = String(time).toLowerCase();
 
-    if (lowerTime.includes('matin')) return '#FFF9C4';       // jaune clair
+    if (lowerTime.includes('arrivée')) return '#c27673ff'; 
+    if (lowerTime.includes('matin')) return '#e2c854ff';       // jaune clair
     if (lowerTime.includes('midi')) return '#9ef068ff';        // orange clair
     if (lowerTime.includes('aprem') || lowerTime.includes('après')) return '#6eb9dbff'; // bleu clair
     if (lowerTime.includes('soir')) return '#3f3dccff';        // violet clair
@@ -85,6 +89,26 @@ const EditableTimelineCard = ({
 
     return '#FFFFFF'; // par défaut
 };
+
+const getDayName = (dateString) => {
+  if (!dateString) return 'Pas de date';
+  
+  // Parse le format DD/MM/YYYY
+  const parts = dateString.split('/');
+  if (parts.length !== 3) return 'Format incorrect';
+  
+  const [day, month, year] = parts;
+  
+  // Crée la date (mois - 1 car les mois commencent à 0 en JavaScript)
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  
+  // Vérifie si c'est une date valide
+  if (isNaN(date.getTime())) return 'Date invalide';
+  
+  const dayName = date.toLocaleDateString('fr-FR', { weekday: 'long' });
+  return dayName.charAt(0).toUpperCase() + dayName.slice(1);
+};
+
 
 
   return (
@@ -103,7 +127,43 @@ const EditableTimelineCard = ({
     >
         <Box sx={{ height: 30, backgroundColor: getColorByTime(event.time) }} />
 
-      <CardContent sx={{ p: 3 }}>
+      <CardContent sx={{ p: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TodayIcon sx={{ fontSize: 20, color: 'primary.dark' }} />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: 'primary.dark',
+                fontSize: '1.1rem'
+              }}
+            >
+              {event.date}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: 'primary.dark',
+                fontSize: '1.1rem'
+              }}
+            >
+              - {getDayName(event.date + "")}
+            </Typography>
+          </Box>
+          
+          {showDelete && (
+            <IconButton
+              onClick={handleDelete}
+              size="small"
+              sx={{ color: 'error.main' }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )}
+        </Box>
+
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <ScheduleIcon sx={{ fontSize: 20, color: 'primary.main' }} />
@@ -143,9 +203,17 @@ const EditableTimelineCard = ({
           {event.activity}
         </Typography>
 
-        {event.place && (
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 2 }}>
-            <LocationIcon sx={{ fontSize: 18, color: 'text.secondary', mt: 0.2 }} />
+   {event.place && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            pl: 0,
+          }}
+        >
+          {/* 📍 Item 1 - Lieu */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <LocationIcon sx={{ fontSize: 18, color: 'text.secondary', mr: 1 }} />
             <Typography
               variant="body2"
               sx={{
@@ -157,7 +225,34 @@ const EditableTimelineCard = ({
               {event.place}
             </Typography>
           </Box>
-        )}
+
+          {/* 🌤️ Item 2 - Météo */}
+          {weather && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Avatar
+                src={`https:${weather.icon}`}
+                alt={weather.condition}
+                sx={{ width: 40, height: 40 }}
+              />
+              <Box>
+                <Typography variant="body2" fontWeight="bold">
+                  {weather.avgTemp}°C
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {weather.minTemp}° - {weather.maxTemp}°
+                </Typography>
+              </Box>
+            </Box>
+          )}
+        </Box>
+      )}
+
+
+
+
+{/* 🌤️ Affichage météo */}
+          
+
 
         {/* Informations supplémentaires avec statut éditable */}
         <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>

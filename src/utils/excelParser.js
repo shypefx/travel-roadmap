@@ -1,15 +1,48 @@
 // excelParser.js - VERSION COMPLÈTE AVEC CORRECTIONS POUR FEUILLES DISTINCTES
 import * as XLSX from 'xlsx';
+import { cleanCityName } from './cityNormalizer'; // si séparé
+
 
 export const parseExcelFile = (file) => {
   if (!file) return Promise.reject(new Error('Aucun fichier fourni'));
+  
 
   const extension = file.name.split('.').pop().toLowerCase();
+  console.log('📂 Fichier importé:', file.name, 'Extension:', extension);
+  const city = extractCityFromFilename(file.name); // 👈 ajout
+  localStorage.setItem('travelCity', city); // 👈 sauvegarde
 
   if (extension === 'csv') return parseCSVFile(file);
   if (['xlsx', 'xls'].includes(extension)) return parseExcelWithAllSheets(file);
 
   return Promise.reject(new Error('Format non supporté'));
+};
+
+const extractCityFromFilename = (filename) => {
+  const base = filename.split('.')[0];
+  const parts = base.split(/[_\-]/);
+
+  const cityCandidate = parts.find(part =>
+    part.length > 3 &&
+    !['activite', 'activité', 'activitée', 'activities', 'planning', 'roadmap', 'city', 'program', 'programme'].includes(part.toLowerCase())
+  );
+
+  if (cityCandidate) {
+    const cleaned = cleanCityName(cityCandidate);
+    console.log('[🏙️ Ville nettoyée]:', cleaned);
+    return cleaned;
+  }
+
+  return 'New York'; // fallback
+};
+
+const capitalizeWords = (str) => {
+  return str
+    .replace(/_/g, ' ')
+    .replace(/-/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 };
 
 // 🔄 Lecture de toutes les feuilles et détection par nom
