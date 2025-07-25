@@ -41,9 +41,6 @@ const EditableTimelineCard = ({
     { value: 'À faire', label: 'À faire', color: 'warning' },
     { value: 'En cours', label: 'En cours', color: 'info' },
     { value: 'Terminé', label: 'Terminé', color: 'success' },
-    { value: 'Annulé', label: 'Annulé', color: 'error' },
-    { value: 'Reporté', label: 'Reporté', color: 'secondary' },
-    { value: '-', label: 'Aucun', color: 'default' }
   ];
 
   const handleMapsClick = () => {
@@ -90,6 +87,21 @@ const EditableTimelineCard = ({
     return '#FFFFFF'; // par défaut
 };
 
+const getShadowColorForStatus = (status) => {
+  const colorMap = {
+    warning: 'rgba(255, 152, 0, 0.5)',     // orange
+    info: 'rgba(33, 150, 243, 0.5)',       // bleu
+    success: 'rgba(76, 175, 80, 0.5)',     // vert
+    error: 'rgba(244, 67, 54, 0.5)',       // rouge
+    secondary: 'rgba(156, 39, 176, 0.5)',  // violet
+    default: 'rgba(158, 158, 158, 0.5)'    // gris
+  };
+
+  const option = statusOptions.find(opt => opt.value === status);
+  return colorMap[option?.color || 'default'];
+};
+
+
 const getDayName = (dateString) => {
   if (!dateString) return 'Pas de date';
   
@@ -109,6 +121,9 @@ const getDayName = (dateString) => {
   return dayName.charAt(0).toUpperCase() + dayName.slice(1);
 };
 
+const isCompleted = event.statut === 'Terminé';
+
+
 
 
   return (
@@ -116,13 +131,19 @@ const getDayName = (dateString) => {
       sx={{
         mb: 2,
         borderRadius: 3,
-        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+        boxShadow: `0 0 8px ${getShadowColorForStatus(event.statut)}`,
         border: '1px solid rgba(0,0,0,0.06)',
         transition: 'all 0.3s ease',
         '&:hover': {
           boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
           transform: 'translateY(-2px)'
-        }
+        },
+        opacity: isCompleted ? 0.6 : 1, // 🔹 Grisé si terminé
+        filter: isCompleted ? 'grayscale(0.5)' : 'none',
+        '&:hover': {
+          boxShadow: `0 0 20px ${getShadowColorForStatus(event.statut)}`,
+          transform: 'translateY(-2px)'
+    }
       }}
     >
         <Box sx={{ height: 30, backgroundColor: getColorByTime(event.time) }} />
@@ -256,14 +277,7 @@ const getDayName = (dateString) => {
 
         {/* Informations supplémentaires avec statut éditable */}
         <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
-          {event.pass && event.pass !== '-' && (
-            <Chip
-              label={event.pass}
-              size="small"
-              color="success"
-              sx={{ borderRadius: 2 }}
-            />
-          )}
+          {event.pass && event.pass !== '-' }
           
           {/* Statut éditable */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

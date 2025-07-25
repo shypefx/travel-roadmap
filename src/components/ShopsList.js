@@ -175,19 +175,7 @@ const ShopsList = ({ shops, onUpdateShop, title = "🏪 Magasins" }) => {
                         {shop.address}
                       </Typography>
                     )}
-                    {shop.speciality && (
-                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                        🎵 {shop.speciality}
-                      </Typography>
-                    )}
-                    {shop.notes && (
-                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontStyle: 'italic' }}>
-                        💡 {shop.notes}
-                      </Typography>
-                    )}
-                    <Box mt={1}>
-                      <Chip label={shop.category} size="small" variant="outlined" />
-                    </Box>
+
                   </Box>
                 }
               />
